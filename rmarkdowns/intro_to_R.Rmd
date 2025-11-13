@@ -63,6 +63,9 @@ Hint: The *console with the code you need to write* is pictured below
 Note: it's very important to follow the coding syntax (make sure the package name is in quotes within the parentheses). 
 
 Let's double check to see if it installed correctly using the following code:
+```{r}
+system.file(package = "tidyverse")
+```
 
 ```{r}
 system.file(package = "tidyverse") # input the name of the package in quotes
@@ -107,6 +110,17 @@ my_age + 5 # how old will you be in 5 years?
 
 #### <span style="color: red;">Challenge 1</span>
 Create a my_name variable with your name assigned to the variable instead of "Victoria DelaCruz". Then, create a my_age variable with your age. 
+
+```{r}
+my_name <- "Rebecca Carino-Agustin"
+my_name
+```
+
+```{r}
+my_age = 31
+my_age + 5
+```
+
 
 #### Different Types of Data
 
@@ -205,6 +219,10 @@ In the code chunk below, we use the `read_csv()` function to read in the csv fil
 sdr_data <- read_csv(here("data/SDR-2023-Data.csv")) # assigning the dataset to a variable so that we can look at/reference it
 # to view the whole dataset you can click on sdr_data in your environment pane at the top right of your screen)
 ```
+```{r}
+sdr_data <- read_csv(here("data/SDR-2023-Data.csv"))
+```
+
 Cleaning names
 ```{r}
 sdr_data <- clean_names(sdr_data) # cleaning column names 
@@ -294,6 +312,17 @@ What if we want to subset specific rows? We can do this by using the filter func
 #### <span style="color: red;">Challenge 2</span>
 Using the `select()` function, select two new SDG goal scores. Assign it to a variable named `SDG_scores`. 
 
+```{r}
+sdr_data %>% 
+  select(goal_5_score, goal_6_score)
+```
+
+```{r}
+SDG_scores = sdr_data %>% 
+  select(goal_5_score, goal_6_score)
+```
+
+
 *2. filter()*
 
 Similarly to select, `filter()` can be used to extract specific rows. Let's try this out by filtering our data for those within the Oceania region.
@@ -313,6 +342,17 @@ Notes:
 
 #### <span style="color: red;">Challenge 3</span>
 Using the `filter()` function, filter for another region other than Oceania. Assign it to a variable named `new_region`. 
+
+
+```{r}
+sdr_data %>% 
+  filter(regions_used_for_the_sdr == "Sub-Saharan Africa")
+```
+
+```{r}
+new_region = sdr_data %>% 
+  filter(regions_used_for_the_sdr == "Sub-Saharan Africa")
+```
 
 **Important**
 
