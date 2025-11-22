@@ -202,7 +202,7 @@ ggplot(sdr_data, aes(x = goal_12_score,
   geom_point() +
   geom_smooth() +
   stat_cor() +
-  theme_minimal() 
+  theme_minimal()
 
 ```
 
@@ -220,3 +220,20 @@ ggplot(sdr_data, aes(x = goal_12_score,
       - are there any points that don't follow the trend (outliers)
         
         - which country(s) are outliers?
+
+```{r}
+library(plotly)
+```
+
+```{r}
+goal_17_plot <- ggplot(sdr_data, aes(x = goal_17_score, 
+                     y = goal_6_score, label = country)) +
+  geom_point() +
+  geom_smooth() +
+  stat_cor() +
+  theme_minimal()
+  
+ggplotly(goal_17_plot)
+```
+
+There is a moderately positive relationship with sustainable management of water and sanitation for all (Goal 6) and partnerships for these goals (Goal 17). This may indicate that having partners to carry out SDGs are good indicators for having sustainable mangaement of water and sanitation. However, some countries, such as Algeria, have partnerships, but have low management scores. This maybe due to unequal partnerships and some countries benefitting, while others do not.
