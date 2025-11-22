@@ -107,7 +107,7 @@ Interactive visualizations are a really exciting part of data science! Interacti
 ```{r}
 goal_4_histogram <- ggplot(sdr_data, aes(x = goal_4_score, fill=regions_used_for_the_sdr)) +
   geom_histogram() +
-  theme_minimal() +
+  theme_minimal () +
   scale_fill_viridis_d() +
   labs(title = "Distributions of SDG 4 Scores",
        x = "SDG 4 Score",
@@ -145,7 +145,19 @@ ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_u
 - make it interactive with ggplotly()
 
   - hint: you will have to assign a name to the plot
+  
+```{r}
+goal_3_and_4_scatterplot <- ggplot(data = sdr_data, aes(x= goal_3_score, y = goal_4_score, color = regions_used_for_the_sdr)) +
+  geom_point() +
+  theme_light () +
+  scale_fill_viridis_d() +
+  labs(title = "Distributions of SDG 3 & 4 Scores",
+       x = "SDG 3 Score",
+       y = "SDG 4 Score",
+       fill = "Region")
 
+ggplotly(goal_3_and_4_scatterplot)
+```
 
 
 ### Creating interactive maps with `leaflet`
@@ -273,5 +285,16 @@ Can you edit the code chunk above that generates the map to:
   - Hint: [look under the RColorBrewer Palettes here](https://www.datanovia.com/en/blog/top-r-color-palettes-to-know-for-great-data-visualization/)
     
 
+```{r}
+mytext <- paste(
+    "Country: ", sdr_data_world_joined$country,"<br/>", 
+    "Goal 4 Score: ", round(sdr_data_world_joined$goal_4_score, 2), 
+    sep="") %>%
+  lapply(htmltools::HTML)
 
+leaflet(sdr_data_world_joined) %>% 
+  addTiles()  %>% 
+  setView( lat=10, lng=0 , zoom=2) %>%
+  addPolygons(stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorQuantile("Purples", goal_4_score)(goal_4_score), label = mytext)
+```
 
