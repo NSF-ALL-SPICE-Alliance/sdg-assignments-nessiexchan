@@ -334,19 +334,61 @@ plotPartial(pd)
 Edit this code chunk `k2 <- kmeans(sdr_data_imputed, centers = 2)` under the silhouette plot to increase the number of clusters
 
 - Then, run the code chunk `fviz_cluster(k2, data = sdr_data_imputed) + theme_minimal()` to see the new visualization with the increased number of clusters
-  
+
+```{r}
+k5 <- kmeans(sdr_data_imputed, centers = 5)
+```
+
+```{r}
+fviz_cluster(k5, data = sdr_data_imputed) + theme_minimal()
+```
+```{r}
+country_clusters1 <- as.data.frame(k5$cluster)
+```
+
+
 #### <span style="color: red;">Challenge 2</span>
 
 Edit this code chunk `rf_matmort <- randomForest(normalized_score_sdg3_matmort ~ ., data = sdr_data_imputed, importance = TRUE)` to predict a different indicator score (any indicator other than normalized_score_sdg3_matmort)
+
+```{r}
+rf_vac <- randomForest(normalized_score_sdg3_vac ~ ., data = sdr_data_imputed, importance = TRUE)
+```
+
+```{r}
+rf_vac
+```
+```{r}
+importance_df1 <- as.data.frame(rf_vac$importance)
+```
+
+```{r}
+importance_df1_top_10 <- importance_df1 %>%
+  rownames_to_column(var = "variable") %>%
+  slice_max(n = 10, order_by = `%IncMSE`)
+```
+
+```{r}
+ggplot(importance_df1_top_10, aes(x = `%IncMSE`, y = reorder(variable, `%IncMSE`))) +
+  geom_bar(stat = "identity", fill = "steelblue", color = "black") +
+  theme_minimal() +
+  labs(title = "Most Important Variables in Predicting Wellness",
+       subtitle = "Top 10",
+       y = "SDG Indicator",
+       x = "Feature Importance (% Increase in Mean Squared Error)")
+```
+```{r}
+pdp::partial(rf_vac, pred.var = "normalized_score_sdg4_second", plot = TRUE)
+```
+
+```{r}
+pd1 <- pdp::partial(rf_vac, pred.var = c("normalized_score_sdg4_second", "normalized_score_sdg3_uhc"))
+
+plotPartial(pd1)
+```
 
 - Rename the random forest model from rf_matmort to something that more accurately represents the model (base the name on the indicator you are predicting)
 
   - Run the remainder of the code chunks below to see the different outputs
     
     - *Hint* make sure to continue replacing rf_matmort with the new name you assign your random forest model
-
-
-
-
-
-  
